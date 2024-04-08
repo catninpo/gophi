@@ -2,16 +2,18 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/catninpo/gophi/handlers"
 	"github.com/catninpo/gophi/middleware"
+	"github.com/catninpo/gophi/postgres"
 )
 
 var done = make(chan struct{})
@@ -21,7 +23,13 @@ func main() {
 		"specify the port to run the http server on, defaults to 8888")
 	flag.Parse()
 
-	router := registerHandlers()
+	db, err := postgres.Open(os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatalf("unable to connect to postgres database: %v", err)
+	}
+	defer db.Close()
+
+	router := registerHandlers(db)
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", *port),
@@ -45,13 +53,14 @@ func main() {
 // registerHandlers will link the given router to the handlers specified in the
 // /handlers directory. Routes can be specified with HTTP verb and path
 // variables.
-func registerHandlers() *http.ServeMux {
+func registerHandlers(db *sql.DB) *http.ServeMux {
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /user/{id}", func(w http.ResponseWriter, r *http.Request) {
-		id := r.PathValue("id")
-		io.WriteString(w, id)
-	})
+	userHandler := handlers.UserHandler{
+		UserService: postgres.NewUserService(db),
+	}
+
+	router.HandleFunc("GET /user/{id}", userHandler.GetUser)
 
 	return router
 }

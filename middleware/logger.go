@@ -10,7 +10,7 @@ import (
 // handler the following information:
 //
 //	{StatusCode} {RequestMethod} {RequestPath} {TimeTaken}
-//	        200             GET         /brok    18.091µs
+//	        200             GET        /gophi    18.091µs
 func Logging(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()

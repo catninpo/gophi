@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/catninpo/gophi"
+	view "github.com/catninpo/gophi/views/user"
 )
 
 type UserHandler struct {
@@ -25,12 +26,20 @@ func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	b, err := json.Marshal(user)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+	if r.Header.Get("Accept") == "application/json" {
+		b, err := json.Marshal(user)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write(b)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write(b)
+	err = view.Show(user).Render(r.Context(), w)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }

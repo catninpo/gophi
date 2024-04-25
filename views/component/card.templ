@@ -1,0 +1,44 @@
+package component
+
+templ Card(name string) {
+  <div class={ card() }>
+    <img src="https://img.freepik.com/premium-photo/baby-cheetah-cub-with-green-background_927923-4.jpg"
+      alt="Cheetah Cub" style="width:100%"/>
+    <h1>{ name }</h1>
+    <p class={ description() }>Too cute to be evil.</p>
+    <p>Southern Africa</p>
+    <p><button class={ button() }>Pet</button></p>
+  </div>
+}
+
+css card() {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+css description() {
+  color: grey;
+  font-size: 18px;
+}
+
+css button() {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+css link() {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}

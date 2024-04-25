@@ -8,9 +8,6 @@ If you wish to have a play around with the project you can clone it down and eit
 or run the application from the `cmd/` directory. You can specify an optional port but by
 default this application will run on port `:8888`.
 
-```bash
-go run main.go -port=8888
-```
 This application expects one environmental variable to be set for the connection to a 
 local postgres database. It will look for this connection string in the `DATABASE_URL` 
 environment variable. You can set this with the following:
@@ -26,10 +23,15 @@ file with the following temporarily to get the project running:
 func (u *UserService) UserByID(id int) (*gophi.User, error) {
     return &gophi.User{
         ID: 1,
-        Name: "Gophi"
+        Name: "Gophi",
     }, nil
 }
 ```
+
+The project also implements a very basic `templ` implementation, you can find
+installastion instructions at the [a-h/templ](https://github.com/a-h/templ). To aid
+in building the project a Makefile has been provided so you can simply run `make` to 
+get the project running.
 
 ## Contributing
 If you see areas of improvement within the codebase, feel free to submit a pull request with 

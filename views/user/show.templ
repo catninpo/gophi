@@ -1,0 +1,13 @@
+package user
+
+import (
+  "github.com/catninpo/gophi"
+  "github.com/catninpo/gophi/views/component"
+  "github.com/catninpo/gophi/views/layout"
+)
+
+templ Show(user *gophi.User) {
+  @layout.Base() {
+    @component.Card(user.Name)
+  }
+}
